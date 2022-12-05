@@ -6,6 +6,7 @@ export default function day3(x) {
     alph += alph.toUpperCase()
     //PART 1
     let found = []
+    let found2 = []
     sortedX.forEach(element => {
       let foundS = []
       let compartment1 = element.slice(0, element.length / 2)
@@ -38,5 +39,33 @@ export default function day3(x) {
     });
   
     //PART2
-    return points + ", " + "-------"
+    let sortedY = x.split("\n")
+    for (let index = 0; index < sortedX.length; index += 3) {
+    let foundT = []
+    const element = sortedX[index];
+    const element1 = sortedX[index + 1]
+    const element2 = sortedX[index + 2]
+    
+
+    for (let index = 0; index < element.length; index++) {
+      const letter = element[index];
+      if (element1.includes(letter) && element2.includes(letter)) {
+        if (!foundT.includes(letter)) {
+          foundT.push(letter)
+        }   
+      }
+    }
+    found2 = found2.concat(foundT)
+    }
+    let points2 = 0
+    found2.forEach(element => {
+      for (let index = 0; index < alph.length; index++) {
+        const element1 = alph[index];
+         if (element == element1) {
+          points2 += index + 1 
+         }
+      }
+    });
+
+    return points + ", " + points2
   }

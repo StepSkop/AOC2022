@@ -39,7 +39,12 @@ function req(day) {
           case 3:
             console.log(`Day ${day} answers are: ${day3(body.toString())}`);
             break;
-
+          case 4:
+            console.log(`Day ${day} answers are: ${day4(body.toString())}`);
+            break;
+          case 5:
+            console.log(`Day ${day} answers are: ${day5(body.toString())}`);
+            break;
           default:
             console.log("Not implemeted (yet)")
             break;
@@ -66,6 +71,5 @@ ask()
 import day1 from "./src/days/day1.js";
 import day2 from "./src/days/day2.js";
 import day3 from "./src/days/day3.js";
-
-
-
+import day4 from "./src/days/day4.js";
+import day5 from './src/days/day5.js';
