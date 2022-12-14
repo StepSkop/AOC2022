@@ -24,7 +24,7 @@ function req(day) {
       });
       res.on("end", function () {
         const body = Buffer.concat(chunks);
-
+        
         const splitter = "----------------------------------------------------------------------"
         console.log("\n" + splitter);
         switch (day) {
@@ -50,11 +50,16 @@ function req(day) {
             break;
         }
         console.log(splitter + "\n");
+        
         ask()
+        return new Promise((resolve) => {
+          resolve(body.toString())
+        })
       });
     });
     req.end();
 }
+
 //QUESTION (get day number)
 let day
 const rl = readline.createInterface({

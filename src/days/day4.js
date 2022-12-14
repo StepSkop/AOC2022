@@ -1,4 +1,6 @@
 export default function day4(x) {
+
+    
     let sortedX = x.split('\n')
     sortedX = sortedX.slice(0, - 1)
 
