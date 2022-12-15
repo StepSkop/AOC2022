@@ -1,61 +1,119 @@
-export default function day7(inputY) {
-  let curentDir = 0
-  let dirs = []
+export default function day7(input) {
+  const commands = input.slice(0, -1).split("\n");
+  let wholeSize = 0
   let path = []
-  let countedDirs = []
-  let inputLines = inputY.split('\n').slice(0,-1)
-  for (let index = 0; index < inputLines.length; index++) {
-    const element = inputLines[index];
-    if (element.includes('$ cd')) {
-      switch (element.split('$ cd ')[1]) {
-        case '/':
-          curentDir = 0
-          break;
-        case '..':
-          curentDir--
-          path.slice(0, -1)
-          break
-        default:
-          curentDir++
-          path.push(element.split('$ cd ')[1])
-          break;
-      }
-    }else if (element.includes('dir ')) {
-      continue
-    }else if (element.includes('$ ls')) {
-      continue
+  let tree = []
+  for (let index = 0; index < commands.length; index++) {
+    const command = commands[index];
+    if (!(command.startsWith('$') || command.startsWith('dir'))) {
+      wholeSize += parseInt(command.split(" ")[0])
     }
-    else {
-      let size = element.split(" ")[0]
-      let dirContent = []
-      dirContent.push(curentDir)
-      dirContent.push(path)
-      dirContent.push(size)
-      dirs.push(dirContent)
-    }
+    if (command.startsWith('$')) {
+        const operation = command.split(" ")[1]
+        switch (operation) {
+            case 'cd':
+                switch (command.split(' ')[2]) {
+                    case '/':
+                        path = []
+                        break;
+                    case '..':
+                        path.pop()
+                        break;
+                    default:
+                        path.push(command.split(' ')[2])
+                        break
+                }
+                break;
+            case 'ls':
+                let contextContent = []
+                for (let index2 = index + 1; index2 < commands.length; index2++) {
+                    const nextLines = commands[index2];
+                    if (nextLines.startsWith('$')) {
+                        break
+                    }
+                    let type
+                    let size
+                    let name
+                    if (nextLines.startsWith('dir')) {
+                        type = 'directory'
+                        size = 0
+                        name = nextLines.split(' ')[1]
+                    } else {
+                        type = 'file'
+                        size = parseInt(nextLines.split(' ')[0])
+                        name = nextLines.split(' ')[1]
+                    }
+                    contextContent.push({
+                        type: type,
+                        size: size,
+                        name: name
+                    })
+                    
+                }
+                tree.push({
+                    path: structuredClone(path),
+                    content: contextContent
+                })
+                break;
+        }
+    }     
   }
 
-  const sortedArray = [...dirs].sort((a, b) => a[0] - b[0]);
-  let actualDir = sortedArray[0][0]
+  tree.sort((a, b) => a.path.length - b.path.length);
+  tree.reverse()
 
-  for (let index = 0; index < sortedArray.length; index++) {
-    const element = sortedArray[index];
+  let dSizes = []
+  tree.forEach(dir => {
+    let size = 0;
+    dir.content.forEach(oneContent => {
+        if (oneContent.type == "file") {
+            size += oneContent.size;
+        } else {
+            let dSize = dSizes.find(d => d.path.join("/") === dir.path.concat(oneContent.name).join("/"));
 
-    while (element[0] == actualDir) {
-      console.log(element[0]);
+            if (dSize) {
+                size += dSize.size;
+            }
+        }
+    });
+    dSizes.push({
+        path: dir.path,
+        size: size
+    });
+  })
+
+  dSizes.sort((a, b) => {
+    if (a.size < b.size) {
+        return -1;
+    } else if (a.size > b.size) {
+        return 1;
+    } else {
+        return 0;
     }
-    actualDir = sortedArray[i]
-    i--
-    // let dirSize = 0
-    // if ((element[0] === actualDir) && (element[1] === sortedArray[index + 1][1])) {
-    //   let dirContent = []
-    //   dirContent.push(element[0]-1)
-    //   dirContent.push(element[1].pop())
-    //   dirContent.push(dirSize + sortedArray[index + 1])
-  }
-  console.log(sortedArray[0]);
-  console.log(sortedArray[1]);
-  return 'OK'
-      
+  });
+
+  let sizes = []
+  dSizes.forEach(dir =>{
+    sizes.push(dir.size)
+  })
+
+  let finSize = 0
+  dSizes.forEach(dir => {
+    
+    if (dir.size < 100000) {
+        finSize += dir.size
+    }
+    
+  });
+
+  //Part 2
+  let toDel = 30000000 - (70000000 - wholeSize)
+  let closest = 70000000
+  sizes.forEach(num => {
+    if (num >= toDel && num < closest) {
+      closest = num
+    }
+  })
+
+  return finSize + ", " + closest
 }
-//0-root 1-a 2-b 3-c 4-d 5-e 6-f 7-g 8-h
