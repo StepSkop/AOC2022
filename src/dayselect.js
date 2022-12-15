@@ -4,6 +4,7 @@ import day3 from "./days/day3.js";
 import day4 from "./days/day4.js";
 import day5 from './days/day5.js';
 import day6 from './days/day6.js'
+import day7 from "./days/day7.js";
 
 export default function dayselect(day, res) {
     let handler = {
@@ -12,7 +13,8 @@ export default function dayselect(day, res) {
         3: day3,
         4: day4,
         5: day5,
-        6: day6
+        6: day6,
+        7: day7,
     }
     function callFunction(day, res) {
         const func = handler[day];
