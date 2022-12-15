@@ -43,7 +43,7 @@ function req(day) {
             console.log(`Day ${day} answers are: ${day4(body.toString())}`);
             break;
           case 5:
-            console.log(`Day ${day} answers are: ${day5(body.toString())}`);
+            console.log(`Day ${day} answers are: ${day5(body.toString())}, (for second part see /src/days/day5.js comment on line 32)`);
             break;
           default:
             console.log("Not implemeted (yet)")

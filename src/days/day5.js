@@ -1,4 +1,5 @@
 export default function day5(x) {
+
     let rowStacks = []
     let input = x.split("\n\n").map(l => l.split("\n"));
     input[0].forEach(line => {
@@ -10,8 +11,8 @@ export default function day5(x) {
             rowStacks.push(row)
         };
     });
+
     let stacks = []
-    let stacks2 = []
     for (let index2 = 0; index2 < rowStacks[rowStacks.length - 1].length; index2++) {
         let column = []
         for (let y = 0; y < rowStacks.length; y++) {
@@ -19,10 +20,9 @@ export default function day5(x) {
             column.push(rowStacks[y][index2])
         }
         stacks.push(column)
-        stacks2.push(column)
     }
-    let moves = input[1];
 
+    let moves = input[1];
     moves.forEach(move => {
         move = move.replace("move ","").replace(" from ", " ").replace(" to ", " ").split(" ")
         if (move[0] == '') {
@@ -31,15 +31,10 @@ export default function day5(x) {
         let num = parseInt(move[0])
         let from = parseInt(move[1])
         let to = parseInt(move[2])
-        stacks[to - 1].unshift(...stacks[from - 1].splice(0, num).reverse())
-        //stacks2[to - 1].unshift(...stacks2[from - 1].splice(0, num))
-
+        
+        stacks[to - 1].unshift(...stacks[from - 1].splice(0, num).reverse()) //<- For second part, remove .reverse() from end of this line
     });
 
-    let result = stacks.map(stack => stack[0]).join('');
-
-    let result2 = stacks2.map(stack1 => stack1[0]).join('');
-
-
-    return result + ", " +result2
+    const result = stacks.map(stack => stack[0]).join('');
+    return result
 }
