@@ -1,7 +1,6 @@
 export default function day3(x) {
     let sortedX = x.split('\n')
     sortedX = sortedX.slice(0, -1)
-  
     let alph = "abcdefghijklmnopqrstuvwxyz"
     alph += alph.toUpperCase()
     //PART 1

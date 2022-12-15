@@ -36,5 +36,5 @@ export default function day5(x) {
     });
 
     const result = stacks.map(stack => stack[0]).join('');
-    return result
+    return result + ', (for Part 2 see comment in /src/days/day5.js line 35)'
 }
